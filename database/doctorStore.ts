@@ -30,6 +30,8 @@ export async function DoctorAdd(doc: Doctor) {
                 departmentId: doc.departmentId
             }
         });
+
+        console.log("Doctor Added: ", newDoctor);
         return newDoctor;
     } catch (err) {
         console.error("Error adding doctor:", err);

@@ -1,8 +1,6 @@
 import multer from "multer";
 import express, {Request, Response} from "express";
 import {getAllMedicines, MedicineAdd, MedicineDelete, MedicineUpdate} from "../database/medicineStore";
-import {getAllNurses,NurseUpdate} from "../database/nurseStore";
-
 
 const upload = multer({ storage: multer.memoryStorage() });
 

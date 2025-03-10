@@ -1,7 +1,7 @@
 import express from "express";
 import jwt, {Secret} from 'jsonwebtoken';
 import dotenv from 'dotenv';
-import {createUser, verifyUserCredentials} from "../database/user-data-store";
+import {createUser, verifyUserCredentials} from "../database/userStore";
 import User from "../model/User";
 
 dotenv.config();
@@ -20,7 +20,7 @@ router.post("/login", async (req, res) => {
         const isVerified =  await verifyUserCredentials(user);
 
         if(isVerified){
-            const token = jwt.sign({ username }, process.env.SECRET_KEY as Secret, {expiresIn: "1m"});
+            const token = jwt.sign({ username },process.env.SECRET_KEY as Secret, {expiresIn: "1h"});
             const refreshToken = jwt.sign({ username }, process.env.REFRESH_TOKEN as Secret, {expiresIn: "7d"});
             res.json({accessToken : token, refreshToken : refreshToken});
         }else{

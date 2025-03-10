@@ -1,51 +1,29 @@
 {
-  "name": "express",
-  "description": "Fast, unopinionated, minimalist web framework",
-  "version": "4.21.2",
-  "author": "TJ Holowaychuk <tj@vision-media.ca>",
-  "contributors": [],
-  "license": "MIT",
-  "repository": "expressjs/express",
-  "homepage": "http://expressjs.com/",
-  "funding": {
-    "type": "opencollective",
-    "url": "https://opencollective.com/express"
+  "name": "medi-track-hospital-management-system-backend",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "start": "nodemon server.ts",
+    "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "keywords": [
-    "express",
-    "framework",
-    "sinatra",
-    "web",
-    "http",
-    "rest",
-    "restful",
-    "router",
-    "app",
-    "api"
-  ],
-  "devDependencies": {
-    "@prisma/client": "^6.4.1",
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "dependencies": {
+    "@prisma/client": "^6.3.1",
     "bcrypt": "^5.1.1",
+    "cors": "^2.8.5",
     "dotenv": "^16.4.7",
     "express": "^4.21.2",
+    "googleapis": "^144.0.0",
     "jsonwebtoken": "^9.0.2",
     "multer": "^1.4.5-lts.1"
   },
-  "engines": {
-    "node": ">= 0.10.0"
-  },
-  "files": [
-    "LICENSE",
-    "History.md",
-    "Readme.md",
-    "index.js",
-    "lib/"
-  ],
-  "scripts": {
-    "lint": "eslint .",
-    "test": "mocha --require test/support/env --reporter spec --bail --check-leaks test/ test/acceptance/",
-    "test-ci": "nyc --exclude examples --exclude test --exclude benchmarks --reporter=lcovonly --reporter=text npm test",
-    "test-cov": "nyc --exclude examples --exclude test --exclude benchmarks --reporter=html --reporter=text npm test",
-    "test-tap": "mocha --require test/support/env --reporter tap --check-leaks test/ test/acceptance/"
+  "devDependencies": {
+    "@types/bcrypt": "^5.0.2",
+    "@types/jsonwebtoken": "^9.0.8",
+    "@types/multer": "^1.4.12",
+    "prisma": "^6.3.1",
+    "tsx": "^4.19.2"
   }
 }

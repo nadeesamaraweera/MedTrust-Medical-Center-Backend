@@ -15,6 +15,7 @@ router.post("/add",async (req,res) => {
         res.status(400).send("Error adding Appointment");
     }
 });
+
 router.delete("/delete/:appointmentCode",async (req,res) => {
     const appointmentCode : string = String(req.params.appointmentCode);
     try {

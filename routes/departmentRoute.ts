@@ -1,6 +1,6 @@
 import express from "express";
 import Department from "../model/Department";
-import {DepartmentAdd, DepartmentDelete, DepartmentUpdate, getAllDepartments} from "../database/department-data-store";
+import {DepartmentAdd, DepartmentDelete, DepartmentUpdate, getAllDepartments} from "../database/departmentStore";
 
 const router = express.Router();
 

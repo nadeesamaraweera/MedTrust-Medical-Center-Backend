@@ -1,13 +1,13 @@
 import express, { Request, Response } from "express";
-import {DoctorAdd, DoctorDelete, DoctorUpdate,getAllDoctors} from "../database/doctorStore";
+import {DoctorAdd, DoctorDelete, DoctorUpdate, getAllDoctors} from "../database/doctorStore";
 import multer from "multer";
 
-// Configure Multer for handling file uploads
+// configure "Multer" for handling file uploads
 const upload = multer({ storage: multer.memoryStorage() });
 
 const router = express.Router();
 
-// Define a custom request type that includes multer's file property
+// define a custom request type that includes multer's file property
 interface MulterRequest extends Request {
     file?: Express.Multer.File;
 }
