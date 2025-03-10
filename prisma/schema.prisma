@@ -12,3 +12,115 @@ datasource db {
   provider = "mysql"
   url      = env("DATABASE_URL")
 }
+
+model Department {
+  departmentId     String   @id
+  departmentName   String
+  departmentEmail  String   @unique
+  location         String
+  headOfDepartment String
+  phoneNumber      String
+  doctors          Doctor[]
+  nurses           Nurse[]
+}
+
+model Doctor {
+  doctorId       String          @id
+  doctorName     String
+  specialty      String
+  doctorImg      String          @db.Text
+  gender         String
+  contactNumber  String
+  email          String          @unique
+  departmentId   String
+  department     Department      @relation(fields: [departmentId], references: [departmentId]) // Many-to-one relationship
+  Appointment    Appointment[]
+  medicalReports MedicalReport[]
+}
+
+model Nurse {
+  nurseId       String     @id
+  nurseName     String
+  nurseImg      String     @db.Text
+  gender        String
+  contactNumber String
+  qualification String
+  email         String     @unique
+  departmentId  String
+  department    Department @relation(fields: [departmentId], references: [departmentId]) // Many-to-one relationship
+}
+
+model Patient {
+  patientId        String          @id
+  patientName      String
+  age              String
+  patientImg       String          @db.Text
+  addressLine1     String
+  addressLine2     String
+  postalCode       String
+  gender           String
+  contactNumber    String
+  blood_type       String
+  chronic_diseases String
+  last_visit_date  String
+  MedicalReport    MedicalReport[]
+  Appointment      Appointment[]
+  Payment          Payment[]
+}
+
+model MedicalReport {
+  medicalReportId String  @id
+  reportDate      String
+  testResults     String
+  notes           String
+  patientId       String
+  patientName     String
+  patient         Patient @relation(fields: [patientId], references: [patientId])
+  doctorId        String
+  doctor          Doctor  @relation(fields: [doctorId], references: [doctorId])
+}
+
+model Appointment {
+  appointmentCode   String  @id
+  appointmentDate   String
+  appointmentTime   String
+  doctorId          String
+  doctor            Doctor  @relation(fields: [doctorId], references: [doctorId]) // Many-to-One Relationship
+  patientId         String
+  patient           Patient @relation(fields: [patientId], references: [patientId]) // Many-to-One Relationship
+  appointmentType   String
+  appointmentStatus String
+}
+
+model Medicine {
+  medicineId        String           @id
+  medicineName      String
+  brand             String
+  medicineImg       String           @db.Text
+  dosage_form       String
+  unit_price        String
+  quantity_in_stock String
+  expiry_date       String
+  PaymentDetails    PaymentDetails[]
+}
+
+model Payment {
+  paymentId      String           @id
+  paymentDate    String
+  patient        Patient          @relation(fields: [patientId], references: [patientId], onDelete: Cascade)
+  patientId      String
+  paymentDetails PaymentDetails[]
+}
+
+model PaymentDetails {
+  paymentDetailsId Int      @id @default(autoincrement())
+  payment          Payment  @relation(fields: [paymentId], references: [paymentId], onDelete: Cascade)
+  paymentId        String
+  medicine         Medicine @relation(fields: [medicineId], references: [medicineId], onDelete: Cascade)
+  medicineId       String
+  getQty           Int
+  Price            String
+  totalPrice       String
+  discount         String
+  balance          String
+}
