@@ -23,11 +23,8 @@
     "app",
     "api"
   ],
-  "dependencies": {
-
-  },
   "devDependencies": {
-
+    "express": "^4.21.2"
   },
   "engines": {
     "node": ">= 0.10.0"
