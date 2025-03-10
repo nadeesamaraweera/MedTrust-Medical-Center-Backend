@@ -13,6 +13,12 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+model User {
+  id       Int    @id @default(autoincrement())
+  username String @unique
+  password String
+}
+
 model Department {
   departmentId     String   @id
   departmentName   String
@@ -71,7 +77,7 @@ model Patient {
 model MedicalReport {
   medicalReportId String  @id
   reportDate      String
-  testResults     String
+  testResults     Json
   notes           String
   patientId       String
   patientName     String
@@ -113,14 +119,12 @@ model Payment {
 }
 
 model MedicinePaymentDetails {
-  paymentDetailsId Int      @id @default(autoincrement())
-  payment          Payment  @relation(fields: [paymentId], references: [paymentId], onDelete: Cascade)
-  paymentId        String
-  medicine         Medicine @relation(fields: [medicineId], references: [medicineId], onDelete: Cascade)
-  medicineId       String
-  getQty           Int
-  Price            String
-  totalPrice       String
-  discount         String
-  balance          String
+  medicinePaymentDetailsId Int      @id @default(autoincrement())
+  payment                  Payment  @relation(fields: [paymentId], references: [paymentId], onDelete: Cascade)
+  paymentId                String
+  medicine                 Medicine @relation(fields: [medicineId], references: [medicineId], onDelete: Cascade)
+  medicineId               String
+  getQty                   Int
+  price                    String
+  totalPrice               String
 }
