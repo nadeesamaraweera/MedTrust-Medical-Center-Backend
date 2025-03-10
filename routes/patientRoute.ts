@@ -1,7 +1,6 @@
 import multer from "multer";
 import express, {Request, Response} from "express";
-import {PatientAdd, PatientUpdate} from "../database/patientStore";
-import {NurseUpdate} from "../database/nurseStore";
+import {getAllPatients, PatientAdd, PatientDelete, PatientUpdate} from "../database/patientStore";
 
 const upload = multer({ storage: multer.memoryStorage() });
 
@@ -57,5 +56,24 @@ router.put("/update/:patientId", upload.single("patientImg"), async (req: Multer
         res.status(400).json({ error: "Patient update failed" });
     }
 });
+router.delete("/delete/:patientId",async (req,res) => {
+    const patientId : string = String(req.params.patientId);
+    try {
+        const deletedPatient = await PatientDelete(patientId);
+        res.json(deletedPatient);
+    }catch (err) {
+        console.log("Error deleting patient",err);
+    }
+});
+
+router.get("/view",async (req,res) => {
+    try {
+        const patients = await getAllPatients();
+        res.json(patients);
+    }catch (err) {
+        console.log("Error getting patients",err);
+    }
+});
+
 
 export default router;
