@@ -1,55 +1,77 @@
-import { PrismaClient } from "@prisma/client";
-import Payment from "../model/Payment";
+import {PrismaClient} from "@prisma/client";
+import Patient from "../model/Patient";
+
 
 const prisma = new PrismaClient();
 
-export async function PaymentCreate(paymentData: Payment) {
+export async function PatientAdd(p:Patient){
     try {
-        const newPayment = await prisma.payment.create({
+
+        const newPatient = await prisma.patient.create({
             data: {
-                paymentId: paymentData.paymentId.toString(),
-                paymentDate: paymentData.paymentDate,
-                patientId: paymentData.patientId,
-                paymentDetails: {
-                    create: paymentData.medicineItems.map(medicine => ({
-                        medicineId: medicine.medicineId,
-                        getQty: Number(medicine.getQty),
-                        price: String(medicine.price),
-                        totalPrice: String(medicine.totalPrice),
-                        discount: String(medicine.discount),
-                        balance: String(medicine.balance),
-                    }))
-                }
-            },
-            include: { paymentDetails: true }
+                patientId: p.patientId,
+                patientName: p.patientName,
+                age: p.age,
+                patientImg: p.patientImg,
+                addressLine1: p.addressLine1,
+                addressLine2: p.addressLine2,
+                postalCode: p.postalCode,
+                gender: p.gender,
+                contactNumber: p.contactNumber,
+                blood_type: p.blood_type,
+                chronic_diseases: p.chronic_diseases,
+                last_visit_date: p.last_visit_date
+            }
         });
-
-        for (const medicine of paymentData.medicineItems) {
-            const existingMedicine = await prisma.medicine.findUnique({
-                where: { medicineId: medicine.medicineId }
-            });
-
-            if (!existingMedicine) {
-                throw new Error(`Medicine with Id ${medicine.medicineId} not found`);
-            }
-
-            // Ensure quantity_in_stock is treated as a number
-            const newQuantity = Number(existingMedicine.quantity_in_stock) - Number(medicine.getQty);
-
-            if (newQuantity < 0) {
-                throw new Error(`Not enough stock for item code ${medicine.medicineId}`);
-            }
-
-            await prisma.medicine.update({
-                where: { medicineId: medicine.medicineId },
-                data: { quantity_in_stock: newQuantity } // Ensure it's a number
-            });
-        }
-
-        console.log("Payment added successfully:", newPayment);
-        return newPayment;
-    } catch (err) {
-        console.error("Error creating payment", err);
+        console.log("Patient Added: ",newPatient);
+    }catch (err){
+        console.log("Error adding Patient",err);
         throw err;
     }
 }
+
+export async function PatientUpdate(patientId: string, patient: Partial<Patient>,patientImg?: string){
+    try {
+        const updatedPatient = await prisma.patient.update({
+            where: {patientId},
+            data: {
+                patientName: patient.patientName,
+                age: patient.age,
+                addressLine1: patient.addressLine1,
+                addressLine2: patient.addressLine2,
+                postalCode: patient.postalCode,
+                gender: patient.gender,
+                contactNumber: patient.contactNumber,
+                blood_type: patient.blood_type,
+                chronic_diseases: patient.chronic_diseases,
+                last_visit_date: patient.last_visit_date,
+                patientImg: patientImg ? patientImg : patient.patientImg
+
+            }
+        });
+        console.log("Patient updated: ",updatedPatient);
+    }catch (err){
+        console.log("Error updating patient",err);
+    }
+}
+
+export async function PatientDelete(patientId:string){
+    try {
+        const deletedPatient = await prisma.patient.delete({
+            where: {patientId: patientId},
+        });
+        console.log("Patient deleted: ",patientId);
+        return deletedPatient;
+    }catch (err){
+        console.log("Error deleting Patient",err);
+    }
+}
+
+export async function getAllPatients(){
+    try {
+        return await prisma.patient.findMany();
+    }catch (err) {
+        console.log("Error getting nurses",err);
+    }
+}
+
