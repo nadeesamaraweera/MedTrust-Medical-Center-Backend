@@ -20,7 +20,7 @@ router.post("/login", async (req, res) => {
         const isVerified =  await verifyUserCredentials(user);
 
         if(isVerified){
-            const token = jwt.sign({ username },process.env.SECRET_KEY as Secret, {expiresIn: "1h"});
+            const token = jwt.sign({ username }, process.env.SECRET_KEY as Secret, {expiresIn: "1h"});
             const refreshToken = jwt.sign({ username }, process.env.REFRESH_TOKEN as Secret, {expiresIn: "7d"});
             res.json({accessToken : token, refreshToken : refreshToken});
         }else{
@@ -33,12 +33,12 @@ router.post("/login", async (req, res) => {
 
 })
 
+//Register route
 router.post("/register", async (req, res) => {
     console.log('Register', req.body);
-    const username = req.body.username;
-    const password = req.body.password;
+    const {  name,username, password, role } = req.body;
 
-    const user : User = {username, password};
+    const user : User = {name, username, password, role};
 
     try{
         const registration = await createUser(user);
@@ -66,6 +66,7 @@ router.post("/refresh-token", async (req, res) => {
     }
 })
 
+// Authenticate Token Middleware
 export function authenticateToken(req : express.Request, res : express.Response, next : express.NextFunction){
     const authHeader = req.headers.authorization;
     const token = authHeader?.split(' ')[1];

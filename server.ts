@@ -34,8 +34,8 @@ app.use('/payment',paymentRoutes);
 
 
 
-app.listen(3003, (err=>{
-    console.log("Server running on port 3003");
+app.listen(3000, (err=>{
+    console.log("Server running on port 3000");
 }));
 
 app.use('/',(req,res,next)=>{
